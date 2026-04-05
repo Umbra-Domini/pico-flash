@@ -8,7 +8,7 @@
 # =============================================================================
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
-PICO_DIR="$HOME/Desktop/pico"
+PICO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 SOURCE_FLASH_NUKE="$PICO_DIR/flash_nuke.uf2"
 SOURCE_NEEDED_FILES="$PICO_DIR/needed_files"
