@@ -1,7 +1,8 @@
 # pico-flash
 
 > Automated flash tool for [pico-ducky](https://github.com/dbisu/pico-ducky) on Linux.  
-> Wipes, flashes CircuitPython, copies project files, and optionally arms a payload — in one command.
+> Wipes, flashes CircuitPython, copies project files, and optionally arms a payload — in one command.  
+> One-time setup. Run forever.
 
 ---
 
@@ -139,6 +140,7 @@ Once all steps are done, your `~/Desktop/pico-flash/` folder should look like th
 ├── flash_nuke.uf2
 ├── adafruit-circuitpython-raspberry_pi_pico2_w-en_US-x.x.x.uf2
 ├── needed_files/
+│   ├── .gitkeep
 │   ├── boot.py
 │   ├── code.py
 │   ├── duckyinpython.py
@@ -146,6 +148,7 @@ Once all steps are done, your `~/Desktop/pico-flash/` folder should look like th
 │   ├── webapp.py
 │   ├── wsgiserver.py
 │   └── lib/
+│       ├── .gitkeep
 │       ├── adafruit_hid/
 │       ├── adafruit_debouncer.mpy
 │       ├── adafruit_ticks.mpy
@@ -190,7 +193,7 @@ Place any `.dd` files in the repo root and the script will find them automatical
 ## Notes
 
 - The script installs a udev rule on first run so Pico drives mount writable. If you skip the sudo prompt, the copy steps may fail with a read-only filesystem error.
-- If you have multiple CircuitPython `.uf2` files in your pico dir, the script will prompt you to pick one.
+- If you have multiple CircuitPython `.uf2` files in the repo folder, the script will prompt you to pick one.
 - Tested on Ubuntu 22.04 / 24.04 with Pico 2 W.
 
 ---
