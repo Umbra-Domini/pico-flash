@@ -42,36 +42,26 @@ Follow these steps in order before running the script for the first time.
 ### Step 1 — Clone this repo
 
 ```bash
-git clone https://github.com/Umbra-Domini/pico-flash.git
-cd pico-flash
+git clone https://github.com/Umbra-Domini/pico-flash.git ~/Desktop/pico-flash
+cd ~/Desktop/pico-flash
 chmod +x pico_flash.sh
 ```
 
 ---
 
-### Step 2 — Create the pico folder
-
-The script looks for everything in `~/Desktop/pico/`. Create it now:
-
-```bash
-mkdir -p ~/Desktop/pico/needed_files/lib
-```
-
----
-
-### Step 3 — Download flash_nuke.uf2
+### Step 2 — Download flash_nuke.uf2
 
 This file fully erases the Pico's flash before writing new firmware. Without it the script will not run.
 
 → [Download flash_nuke.uf2](https://datasheets.raspberrypi.com/soft/flash_nuke.uf2)
 
-Place it at: `~/Desktop/pico/flash_nuke.uf2`
+Place it at: `~/Desktop/pico-flash/flash_nuke.uf2`
 
 ---
 
-### Step 4 — Download CircuitPython firmware
+### Step 3 — Download CircuitPython firmware
 
-Download the `.uf2` for your specific board and place it in `~/Desktop/pico/`. The script auto-detects it by filename — do not rename the file.
+Download the `.uf2` for your specific board and place it in the repo folder. The script auto-detects it by filename — do not rename the file.
 
 | Board | Download |
 |-------|----------|
@@ -80,17 +70,17 @@ Download the `.uf2` for your specific board and place it in `~/Desktop/pico/`. T
 | Raspberry Pi Pico 2 | [circuitpython.org/board/raspberry_pi_pico2](https://circuitpython.org/board/raspberry_pi_pico2/) |
 | Raspberry Pi Pico 2 W | [circuitpython.org/board/raspberry_pi_pico2_w](https://circuitpython.org/board/raspberry_pi_pico2_w/) |
 
-Place it at: `~/Desktop/pico/adafruit-circuitpython-raspberry_pi_pico2_w-en_US-x.x.x.uf2`
+Place it at: `~/Desktop/pico-flash/adafruit-circuitpython-raspberry_pi_pico2_w-en_US-x.x.x.uf2`
 
 ---
 
-### Step 5 — Download the Adafruit CircuitPython Bundle
+### Step 4 — Download the Adafruit CircuitPython Bundle
 
 The lib folder needs several libraries from Adafruit's bundle.
 
 → [Download the latest bundle (adafruit-circuitpython-bundle-x.x-mpy-YYYYMMDD.zip)](https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases/latest)
 
-Extract the zip, then copy these from the bundle's `lib/` folder into `~/Desktop/pico/needed_files/lib/`:
+Extract the zip, then copy these from the bundle's `lib/` folder into `~/Desktop/pico-flash/needed_files/lib/`:
 
 | File / Folder | What it does |
 |---------------|--------------|
@@ -102,7 +92,7 @@ Extract the zip, then copy these from the bundle's `lib/` folder into `~/Desktop
 
 ---
 
-### Step 6 — Clone pico-ducky and copy the project files
+### Step 5 — Clone pico-ducky and copy the project files
 
 The `.py` files that run on the Pico come from the pico-ducky project.
 
@@ -112,7 +102,7 @@ The `.py` files that run on the Pico come from the pico-ducky project.
 git clone https://github.com/dbisu/pico-ducky.git
 ```
 
-Copy these files from the cloned repo into `~/Desktop/pico/needed_files/`:
+Copy these files from the cloned repo into `~/Desktop/pico-flash/needed_files/`:
 
 ```
 boot.py
@@ -125,22 +115,27 @@ wsgiserver.py
 
 ---
 
-### Step 7 — (Optional) Add a payload
+### Step 6 — (Optional) Add a payload
 
-If you have a DuckyScript payload ready, place it in `~/Desktop/pico/` with a `.dd` extension. The script will detect it automatically and let you choose whether to arm it at flash time.
+If you have a DuckyScript payload ready, place it in the repo root with a `.dd` extension. The script will detect it automatically and let you choose whether to arm it at flash time.
 
 ```
-~/Desktop/pico/your_payload.dd
+~/Desktop/pico-flash/your_payload.dd
 ```
 
 ---
 
 ### Final folder structure
 
-Once all steps are done, your `~/Desktop/pico/` folder should look like this:
+Once all steps are done, your `~/Desktop/pico-flash/` folder should look like this:
 
 ```
-~/Desktop/pico/
+~/Desktop/pico-flash/
+├── pico_flash.sh
+├── README.md
+├── imgs/
+│   ├── Pico_Disclaimer.png
+│   └── Payload_Selection.png
 ├── flash_nuke.uf2
 ├── adafruit-circuitpython-raspberry_pi_pico2_w-en_US-x.x.x.uf2
 ├── needed_files/
@@ -175,7 +170,7 @@ Once all steps are done, your `~/Desktop/pico/` folder should look like this:
 4. When prompted, **hold the BOOTSEL button** on the Pico and plug it into USB.
 5. The script takes it from there — just follow the on-screen steps.
 
-At step 5 (payload), you'll be shown a list of any `.dd` files in `~/Desktop/pico/`. You can pick one to arm it, or skip to leave the Pico in safe mode.
+At step 5 (payload), you'll be shown a list of any `.dd` files in the repo folder. You can pick one to arm it, or skip to leave the Pico in safe mode.
 
 ![pico-flash payload selection screen](imgs/Payload_Selection.png)
 
@@ -188,7 +183,7 @@ At step 5 (payload), you'll be shown a list of any `.dd` files in `~/Desktop/pic
 Payloads are [DuckyScript](https://docs.hak5.org/hak5-usb-rubber-ducky/ducky-script-basics/getting-started) files saved with a `.dd` extension.  
 pico-ducky currently supports **DuckyScript 1.0** and partial **3.0** support.
 
-Place any `.dd` files in `~/Desktop/pico/` and the script will find them automatically.
+Place any `.dd` files in the repo root and the script will find them automatically.
 
 ---
 
