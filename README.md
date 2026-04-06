@@ -48,6 +48,8 @@ cd ~/Desktop/pico-flash
 chmod +x pico_flash.sh
 ```
 
+> ⚠ The `chmod +x` step is required. Without it you will get `Permission denied` when trying to run the script.
+
 ---
 
 ### Step 2 — Download flash_nuke.uf2
@@ -185,11 +187,15 @@ Once all steps are done, your `~/Desktop/pico-flash/` folder should look like th
 ## Usage
 
 1. **Do not plug in the Pico yet.**
-2. Run the script:
+2. Make sure the script is executable (only needed once after cloning):
+   ```bash
+   chmod +x pico_flash.sh
+   ```
+3. Run the script:
    ```bash
    ./pico_flash.sh
    ```
-3. Read and accept the disclaimer.
+4. Read and accept the disclaimer.
 
 ![pico-flash startup and disclaimer screen](imgs/Pico_Disclaimer.png)
 
