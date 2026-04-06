@@ -1,6 +1,6 @@
 # pico-flash
 
-> Automated flash tool for [pico-ducky](https://github.com/dbisu/pico-ducky) on Linux.  
+> Automated flash & management tool for [pico-ducky](https://github.com/dbisu/pico-ducky) on Linux.  
 > Wipes, flashes CircuitPython, copies project files, and optionally arms a payload — in one command.  
 > One-time setup. Run forever.
 
@@ -10,13 +10,28 @@
 
 Flashing a Pico for pico-ducky manually means: holding BOOTSEL, copying a nuke file, waiting for remount, copying CircuitPython, waiting again, copying lib files and scripts, then copying the payload. Every time.
 
-This script automates all of it across 5 steps:
+This script automates all of it. On startup it detects what's plugged in and routes automatically:
+
+- **Flash Mode** — hold BOOTSEL while plugging in → full wipe + reflash across 5 steps
+- **Setup Mode** — bridge GP0→GND, plug in normally → management menu (no payload fire)
+- **Nothing detected** — script waits up to 60s and routes as soon as a device appears
+
+### Flash Mode — 5 steps
 
 1. **Detect** — waits for the Pico to appear in BOOTSEL mode
 2. **Wipe** — copies `flash_nuke.uf2` to fully erase flash
 3. **Flash** — installs CircuitPython automatically (auto-detects the `.uf2` in your pico dir)
 4. **Copy files** — copies your pico-ducky project files to `CIRCUITPY`
 5. **Payload** — interactive picker to arm a `.dd` payload (with a confirmation prompt)
+
+### Setup Mode — management menu
+
+Plug in with GP0 bridged to GND and the script opens a management menu instead of flashing:
+
+1. **Swap payload** — replace the armed payload without reflashing
+2. **Download file to desktop** — pull any file off the Pico to `~/Desktop`
+3. **Eject** — safely unmount and power off the Pico
+4. **Full reflash** — wipe and reflash from within setup mode (replug needed)
 
 Supports all current Pico variants: **Pico**, **Pico W**, **Pico 2**, **Pico 2 W**.
 
@@ -186,6 +201,10 @@ Once all steps are done, your `~/Desktop/pico-flash/` folder should look like th
 
 ## Usage
 
+### Flash Mode
+
+Use this to do a full wipe and reflash from scratch.
+
 1. **Do not plug in the Pico yet.**
 2. Make sure the script is executable (only needed once after cloning):
    ```bash
@@ -196,17 +215,39 @@ Once all steps are done, your `~/Desktop/pico-flash/` folder should look like th
    ./pico_flash.sh
    ```
 4. Read and accept the disclaimer.
+5. When prompted, **hold the BOOTSEL button** on the Pico and plug it into USB. The script detects it and takes over from there.
 
-![pico-flash startup and disclaimer screen](imgs/Pico_Disclaimer.png)
-
-4. When prompted, **hold the BOOTSEL button** on the Pico and plug it into USB.
-5. The script takes it from there — just follow the on-screen steps.
-
-At step 5 (payload), you'll be shown a list of any `.dd` files in the repo folder. You can pick one to arm it, or skip to leave the Pico in safe mode.
-
-![pico-flash payload selection screen](imgs/Payload_Selection.png)
+At step 5 (payload), you'll be shown a list of any `.dd` files in the repo folder. Pick one to arm it, or enter `0` to skip.
 
 > ⚠ If you arm a payload, the script will eject the Pico automatically. Do **not** plug it into your own machine after that — it will execute immediately.
+
+---
+
+### Setup Mode
+
+Use this to manage an already-flashed Pico without wiping it — swap payloads, pull files, or trigger a full reflash.
+
+1. **Bridge GP0 to GND** on the Pico before plugging in. This suppresses payload execution so the script can safely open the device.
+2. Run the script:
+   ```bash
+   ./pico_flash.sh
+   ```
+3. The script detects `CIRCUITPY` and opens the setup menu automatically.
+
+**Setup menu options:**
+
+| Option | What it does |
+|--------|--------------|
+| `1` swap payload | Replace the armed `.dd` payload on the Pico without reflashing |
+| `2` download file to desktop | Copy any file from the Pico to `~/Desktop` |
+| `3` eject | Safely unmount and power off the Pico |
+| `4` full reflash | Wipe and reflash from scratch — replug needed, unplug > plug back in while holding BOTSEL |
+
+---
+
+### Nothing plugged in
+
+If no Pico is detected on startup, the script waits up to 60 seconds and routes automatically as soon as a device appears — BOOTSEL goes to Flash Mode, CIRCUITPY goes to Setup Mode.
 
 ---
 
@@ -223,6 +264,7 @@ Place any `.dd` files in the repo root and the script will find them automatical
 
 - The script installs a udev rule on first run so Pico drives mount writable. If you skip the sudo prompt, the copy steps may fail with a read-only filesystem error.
 - If you have multiple CircuitPython `.uf2` files in the repo folder, the script will prompt you to pick one.
+- In Setup Mode, downloading a file to desktop will automatically append a timestamp to the filename if a file with that name already exists on your desktop.
 - Tested on Ubuntu 22.04 / 24.04 with Pico 2 W.
 
 ---
