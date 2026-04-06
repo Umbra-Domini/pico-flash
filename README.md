@@ -31,7 +31,7 @@ Plug in with GP0 bridged to GND and the script opens a management menu instead o
 1. **Swap payload** — replace the armed payload without reflashing
 2. **Download file to desktop** — pull any file off the Pico to `~/Desktop`
 3. **Eject** — safely unmount and power off the Pico
-4. **Full reflash** — wipe and reflash from within setup mode (replug needed)
+4. **Full reflash** — wipe and reflash from within setup mode; the script ejects the Pico and prompts you to unplug it, hold BOOTSEL, and plug it back in — then the full 5-step flash flow runs automatically from there
 
 Supports all current Pico variants: **Pico**, **Pico W**, **Pico 2**, **Pico 2 W**.
 
@@ -241,7 +241,7 @@ Use this to manage an already-flashed Pico without wiping it — swap payloads, 
 | `1` swap payload | Replace the armed `.dd` payload on the Pico without reflashing |
 | `2` download file to desktop | Copy any file from the Pico to `~/Desktop` |
 | `3` eject | Safely unmount and power off the Pico |
-| `4` full reflash | Wipe and reflash from scratch — replug needed, unplug > plug back in while holding BOTSEL |
+| `4` full reflash | Ejects the Pico, then prompts you to unplug it, hold BOOTSEL, and plug it back in — the full 5-step wipe + reflash runs automatically from there |
 
 ---
 
