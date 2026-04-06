@@ -169,7 +169,7 @@ Once all steps are done, your `~/Desktop/pico-flash/` folder should look like th
 │   ├── code.py
 │   ├── duckyinpython.py
 │   ├── pins.py
-│   ├── secrets.py        ← required, not committed to git
+│   ├── secrets.py
 │   ├── webapp.py
 │   ├── wsgiserver.py
 │   └── lib/
@@ -179,7 +179,7 @@ Once all steps are done, your `~/Desktop/pico-flash/` folder should look like th
 │       ├── adafruit_ticks.mpy
 │       ├── asyncio/
 │       └── adafruit_wsgi/
-└── your_payload.dd   ← optional
+└── your_payload.dd
 ```
 
 ---
