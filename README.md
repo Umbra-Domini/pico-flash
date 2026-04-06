@@ -133,13 +133,16 @@ secrets = {
 
 ---
 
-### Step 7 — (Optional) Add a payload
+### Step 7 — Add payloads
 
-If you have a DuckyScript payload ready, place it in the repo root with a `.dd` extension. The script will detect it automatically and let you choose whether to arm it at flash time.
+Place your DuckyScript payloads in the repo root with a `.dd` extension. The script will detect all of them automatically and present an interactive picker at flash time — choose which one to arm, or skip to leave the Pico in safe mode.
 
 ```
 ~/Desktop/pico-flash/your_payload.dd
+~/Desktop/pico-flash/another_payload.dd
 ```
+
+You can have as many `.dd` files as you like. Only one can be armed per flash.
 
 ---
 
