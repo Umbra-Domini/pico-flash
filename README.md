@@ -116,7 +116,24 @@ wsgiserver.py
 
 ---
 
-### Step 6 — (Optional) Add a payload
+### Step 6 — Create secrets.py
+
+The Pico W firmware starts a Wi-Fi access point on boot so you can reach the web interface. It reads the network name and password from `secrets.py` — **without this file the Pico will crash on startup and no payload will run.**
+
+Create `~/Desktop/pico-flash/needed_files/secrets.py` with the following content, replacing the values with whatever SSID and password you want the Pico to broadcast:
+
+```python
+secrets = {
+    'ssid': 'PicoDucky',
+    'password': 'password123'
+}
+```
+
+> ⚠ Do not commit `secrets.py` to a public repo. Add it to your `.gitignore`.
+
+---
+
+### Step 7 — (Optional) Add a payload
 
 If you have a DuckyScript payload ready, place it in the repo root with a `.dd` extension. The script will detect it automatically and let you choose whether to arm it at flash time.
 
@@ -145,6 +162,7 @@ Once all steps are done, your `~/Desktop/pico-flash/` folder should look like th
 │   ├── code.py
 │   ├── duckyinpython.py
 │   ├── pins.py
+│   ├── secrets.py        ← required, not committed to git
 │   ├── webapp.py
 │   ├── wsgiserver.py
 │   └── lib/
