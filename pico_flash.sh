@@ -331,40 +331,44 @@ mapfile -t PAYLOAD_FILES < <(find "$PICO_DIR" -maxdepth 1 -name "*.dd" 2>/dev/nu
 if [ ${#PAYLOAD_FILES[@]} -eq 0 ]; then
     warn "no .dd payloads found in $PICO_DIR — skipping."
 else
-    # Show picker
-    echo -e "${D}│${X}  ${W}available payloads:${X}"
-    echo -e "${D}│${X}"
-    for i in "${!PAYLOAD_FILES[@]}"; do
-        echo -e "${D}│${X}  ${C}${B}  $((i+1))${X}  ${D}→${X}  $(basename "${PAYLOAD_FILES[$i]}")"
-    done
-    echo -e "${D}│${X}  ${C}${B}  0${X}  ${D}→${X}  skip — no payload"
-    echo -e "${D}│${X}"
-    printf "${D}│${X}  ${W}select payload:${X}  ${D}(0-${#PAYLOAD_FILES[@]}):${X} "
-    read -r pick
-    echo ""
-
-    if [[ "$pick" =~ ^[0-9]+$ ]] && [ "$pick" -ge 1 ] && [ "$pick" -le "${#PAYLOAD_FILES[@]}" ]; then
-        SOURCE_PAYLOAD="${PAYLOAD_FILES[$((pick-1))]}"
-        PAYLOAD_NAME=$(basename "$SOURCE_PAYLOAD")
+    # Show picker — loops back if user says N at the confirm prompt
+    while true; do
+        echo -e "${D}│${X}  ${W}available payloads:${X}"
         echo -e "${D}│${X}"
-        echo -e "${D}│${X}  ${R}${B}⚠  WARNING${X}  ${Y}payload executes IMMEDIATELY on copy${X}"
-        echo -e "${D}│${X}  ${D}         CircuitPython will restart code.py the instant it lands.${X}"
-        echo -e "${D}│${X}  ${D}         Only proceed if deploying to a target machine.${X}"
+        for i in "${!PAYLOAD_FILES[@]}"; do
+            echo -e "${D}│${X}  ${C}${B}  $((i+1))${X}  ${D}→${X}  $(basename "${PAYLOAD_FILES[$i]}")"
+        done
+        echo -e "${D}│${X}  ${C}${B}  0${X}  ${D}→${X}  skip — no payload"
         echo -e "${D}│${X}"
-        printf "${D}│${X}  ${W}arm ${C}${PAYLOAD_NAME}${X}${W}?${X}  ${D}(y/N):${X} "
-        read -r answer
+        printf "${D}│${X}  ${W}select payload:${X}  ${D}(0-${#PAYLOAD_FILES[@]}):${X} "
+        read -r pick
         echo ""
-        if [[ "$answer" =~ ^[Yy]$ ]]; then
-            copy_file "$SOURCE_PAYLOAD" "$CIRCUITPY_MOUNT/payload.dd" "$PAYLOAD_NAME"
-            echo -e "${D}│${X}  ${R}${B}⚡ payload armed —${X} ${C}${PAYLOAD_NAME}${X}"
-            eject_pico "$CIRCUITPY_MOUNT"
-            PAYLOAD_LOADED=1
+
+        if [[ "$pick" =~ ^[0-9]+$ ]] && [ "$pick" -ge 1 ] && [ "$pick" -le "${#PAYLOAD_FILES[@]}" ]; then
+            SOURCE_PAYLOAD="${PAYLOAD_FILES[$((pick-1))]}"
+            PAYLOAD_NAME=$(basename "$SOURCE_PAYLOAD")
+            echo -e "${D}│${X}"
+            echo -e "${D}│${X}  ${R}${B}⚠  WARNING${X}  ${Y}payload executes IMMEDIATELY on copy${X}"
+            echo -e "${D}│${X}  ${D}         CircuitPython will restart code.py the instant it lands.${X}"
+            echo -e "${D}│${X}  ${D}         Only proceed if deploying to a target machine.${X}"
+            echo -e "${D}│${X}"
+            printf "${D}│${X}  ${W}arm ${C}${PAYLOAD_NAME}${X}${W}?${X}  ${D}(y/N):${X} "
+            read -r answer
+            echo ""
+            if [[ "$answer" =~ ^[Yy]$ ]]; then
+                copy_file "$SOURCE_PAYLOAD" "$CIRCUITPY_MOUNT/payload.dd" "$PAYLOAD_NAME"
+                echo -e "${D}│${X}  ${R}${B}⚡ payload armed —${X} ${C}${PAYLOAD_NAME}${X}"
+                eject_pico "$CIRCUITPY_MOUNT"
+                PAYLOAD_LOADED=1
+                break
+            else
+                echo ""
+            fi
         else
             success "payload skipped — safe mode."
+            break
         fi
-    else
-        success "payload skipped — safe mode."
-    fi
+    done
 fi
 
 # ── DONE ─────────────────────────────────────────────────────────────────────
