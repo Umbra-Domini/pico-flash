@@ -3,7 +3,7 @@
 > Automated flash & management tool for [pico-ducky](https://github.com/dbisu/pico-ducky) on Linux.  
 > Wipes, flashes CircuitPython, copies project files, and optionally arms a payload — in one command.  
 > One-time setup. Run forever.
-> Visit [pico-ducky-gui](https://github.com/umbra-domini/pico-ducky-gui) for the gui and automatic version of this stool. 
+> Visit [pico-ducky-gui](https://github.com/umbra-domini/pico-flash-gui) for the gui and automatic version of this stool. 
 
 ---
 
